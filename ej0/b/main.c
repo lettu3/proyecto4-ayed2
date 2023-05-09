@@ -12,7 +12,11 @@ print_data(data_t d) {
 }
 
 void set_name(name_t new_name, data_t *d) {
-    /* COMPLETAR */
+    unsigned int i = 0;
+    while ((new_name[i] != '\0') && (i < NAME_MAXSIZE)){
+        (*d).name[i] = new_name[i];
+        i = i + 1;
+    }
 }
 
 int main(void) {
@@ -21,6 +25,10 @@ int main(void) {
     print_data(messi);
     name_t messi_full_name = "Lionel Messi";
     /* COMPLETAR */
+    
+    set_name(messi_full_name, &messi);
+
+    /**/
     print_data(messi);
 
     return EXIT_SUCCESS;
