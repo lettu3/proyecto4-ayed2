@@ -39,11 +39,13 @@ float average(list l) {
 }
 
 list array_to_list(int array[], unsigned int length) {
-    /* Initialize the list */
+    list l = empty();      /* Initialize the list */
+
     for (unsigned int i = 0u; i < length; ++i) {
         /* Add element to the list  */
     }
-    /* Return list */
+    
+    return l;   /* Return list */
 }
 
 int main(int argc, char *argv[]) {
