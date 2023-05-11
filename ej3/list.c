@@ -6,6 +6,8 @@ typedef struct s_node{
     list next;
 } node;
 
+/*CONSTRUCTORS*/
+
 list empty (){
   list l = NULL;
   return l;
@@ -27,6 +29,8 @@ list addl(list l, elem e){
  * adds and element at the beginning of the list;
 */
 
+/*DESTRUCTOR*/
+
 list destroy(list l){
   node * a;
   node * b;
@@ -44,6 +48,8 @@ list destroy(list l){
 /*
  *  free memory;
 */
+
+/*OPERATIONS*/
 
 bool is_empty(list l){
   bool res = l == NULL;
@@ -137,10 +143,17 @@ elem index(list l, unsigned int i){
 */
 
 list take(list l, unsigned int n){
-  list l2 = empty();
+  assert(length(l) >= n);
+  node * a = l;
+  node * b = NULL;
 
-
-  return l2;
+  unsigned int j = 0u;
+  while (j>n){
+     a = a ->next; 
+  }
+  b = a->next;
+  b = destroy(b);
+  return l;
 }
 /*
  * returns the list with only the first n elemnts of the list l;
@@ -151,7 +164,7 @@ list drop(list l, unsigned int n){
   while (j < n){
     l = tail(l);
   }
-  
+
   return l;
 }
 /*
