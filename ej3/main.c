@@ -36,6 +36,18 @@ float average(list l) {
 /*
     Needs implementation.
 */
+    float average = 0.0;
+    list lcopy = empty();
+    lcopy = copy_list(l);
+    while (!is_empty(lcopy)){
+        average = average + head(lcopy);
+        lcopy = tail(lcopy);
+    }
+    average = (float)average / length(l);
+
+    destroy(lcopy);
+
+    return average;
 }
 
 list array_to_list(int array[], unsigned int length) {
@@ -43,6 +55,7 @@ list array_to_list(int array[], unsigned int length) {
 
     for (unsigned int i = 0u; i < length; ++i) {
         /* Add element to the list  */
+        l = addl(l, array[i]);
     }
     
     return l;   /* Return list */
@@ -69,6 +82,8 @@ int main(int argc, char *argv[]) {
 
     /* call the average function */
     printf("The average is: %.2f \n", average(l));
+
+    l = destroy(l);
 
     return (EXIT_SUCCESS);
 }

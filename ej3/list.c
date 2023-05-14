@@ -1,10 +1,11 @@
 #include "list.h"
 #include <stdlib.h>
+#include <assert.h>
 
-typedef struct s_node{
+struct s_node{
     elem value;
-    list next;
-} node;
+    struct s_node * next;
+};
 
 /*CONSTRUCTORS*/
 
@@ -17,10 +18,10 @@ list empty (){
 */
 
 list addl(list l, elem e){
-  node new;
+  struct s_node new;
   new.value = e;
   new.next = l; 
-  l = malloc(sizeof(node));
+  l = malloc(sizeof(struct s_node));
   (*l) = new;
 
   return l;
@@ -32,8 +33,8 @@ list addl(list l, elem e){
 /*DESTRUCTOR*/
 
 list destroy(list l){
-  node * a;
-  node * b;
+  struct s_node * a;
+  struct s_node * b;
   
   if (!is_empty(l)){
     a = l;
@@ -69,7 +70,7 @@ elem head (list l){
 */
 
 list tail(list l){
-  node * a = l;
+  struct s_node * a = l;
   if (l != NULL){
     l = a->next;
     a = destroy(a);
@@ -81,14 +82,14 @@ list tail(list l){
 */
 
 list addr(list l, elem e){
-  node * a = l;
-  node * b = NULL;
-  node new;
+  struct s_node * a = l;
+  struct s_node * b = NULL;
+  struct s_node new;
   new.value = e;
   new.next = empty();
 
   if (is_empty(l)){
-    l = malloc(sizeof(node));
+    l = malloc(sizeof(struct s_node));
     (*l) = new;
   }
 
@@ -97,7 +98,7 @@ list addr(list l, elem e){
       a = a->next;  
     }
     a ->next = b;
-    b = malloc(sizeof(node));    //agrega el elemento al final de la lista
+    b = malloc(sizeof(struct s_node));    //agrega el elemento al final de la lista
     (*b) = new;
   }
   return l;
@@ -108,7 +109,7 @@ list addr(list l, elem e){
 
 unsigned int length(list l){
   unsigned int length = 0u;
-  node * a = l;
+  struct s_node * a = l;
   while (a != NULL){
     l++;
     a = a -> next;
@@ -120,7 +121,15 @@ unsigned int length(list l){
 */
 
 
-list concat (list l1, list l2);
+list concat (list l1, list l2){
+
+  while (!is_empty(l2)){
+    addr(l1, head(l2));
+    l2 = tail(l2);
+  }
+
+  return l1;
+}
 /*
  * concats the list l2 at the end of the list l1;
 */
@@ -129,7 +138,7 @@ elem index(list l, unsigned int i){
   assert(length(l) > i);
 
   elem output;
-  node * a = l;
+  struct s_node * a = l;
   unsigned int j = 0u;
   while (j < i){
     j++;
@@ -144,8 +153,8 @@ elem index(list l, unsigned int i){
 
 list take(list l, unsigned int n){
   assert(length(l) >= n);
-  node * a = l;
-  node * b = NULL;
+  struct s_node * a = l;
+  struct s_node * b = NULL;
 
   unsigned int j = 0u;
   while (j>n){
@@ -173,7 +182,7 @@ list drop(list l, unsigned int n){
 
 list copy_list(list l1){
   list l2 = empty();
-  node * a = l1;
+  struct s_node * a = l1;
   while (a != NULL){
     addr(l2, a->value);
     a = a->next;
@@ -183,5 +192,3 @@ list copy_list(list l1){
 /*
  * returns a copy of the l1 list;
 */
-
-

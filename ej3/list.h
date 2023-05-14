@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-typedef node * list;
+typedef struct s_node * list;
 typedef int elem;
 
 /*CONSTRUCTORS*/
