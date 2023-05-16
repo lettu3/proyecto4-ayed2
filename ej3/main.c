@@ -37,16 +37,18 @@ float average(list l) {
     Needs implementation.
 */
     float average = 0.0;
-    list lcopy = empty();
-    lcopy = copy_list(l);
+    unsigned int size;
+
+    list lcopy = copy_list(l);
+    average = 0.0;
+    size = length(lcopy);
+
     while (!is_empty(lcopy)){
         average = average + head(lcopy);
         lcopy = tail(lcopy);
     }
-    average = (float)average / length(l);
-
-    destroy(lcopy);
-
+    lcopy = destroy(lcopy);
+    average = average/(float)size;
     return average;
 }
 
@@ -63,7 +65,7 @@ list array_to_list(int array[], unsigned int length) {
 
 int main(int argc, char *argv[]) {
     char *filepath = NULL;
-    FILE *file = NULL;
+    //unused: FILE *file = NULL;
 
     /* parse the filepath given in command line arguments */
     filepath = parse_filepath(argc, argv);

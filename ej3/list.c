@@ -18,12 +18,10 @@ list empty (){
 */
 
 list addl(list l, elem e){
-  struct s_node new;
-  new.value = e;
-  new.next = l; 
-  l = malloc(sizeof(struct s_node));
-  (*l) = new;
-
+  list new = malloc(sizeof(struct s_node));
+  new->value = e;
+  new->next = l;
+  l = new;
   return l;
 }
 /*
@@ -33,17 +31,12 @@ list addl(list l, elem e){
 /*DESTRUCTOR*/
 
 list destroy(list l){
-  struct s_node * a;
-  struct s_node * b;
-  
-  if (!is_empty(l)){
-    a = l;
-    b = a->next;
-    l = b; 
-    free(a);
-    l = destroy(l);
+  list aux = empty();
+  while (!is_empty(l)){
+    aux = l;
+    l = l->next;
+    free(aux);
   }
-
   return l;
 }
 /*
@@ -53,7 +46,7 @@ list destroy(list l){
 /*OPERATIONS*/
 
 bool is_empty(list l){
-  bool res = l == NULL;
+  bool res = (l == NULL);
   return res;
 }
 /*
@@ -70,11 +63,10 @@ elem head (list l){
 */
 
 list tail(list l){
-  struct s_node * a = l;
-  if (l != NULL){
-    l = a->next;
-    a = destroy(a);
-  }
+  assert(!is_empty(l));
+  list aux = l;
+  l = l->next;
+  free(aux);
   return l;
 }
 /*
@@ -82,24 +74,19 @@ list tail(list l){
 */
 
 list addr(list l, elem e){
-  struct s_node * a = l;
-  struct s_node * b = NULL;
-  struct s_node new;
-  new.value = e;
-  new.next = empty();
-
+  list new = malloc(sizeof(struct s_node));
+  list aux = empty();
+  new->value = e;
+  new->next = NULL;
   if (is_empty(l)){
-    l = malloc(sizeof(struct s_node));
-    (*l) = new;
+    l = new;
   }
-
   else{
-    while (a ->next != NULL){     //busca el ultimo elemento de la lista
-      a = a->next;  
+    aux = l;
+    while (aux->next != NULL){
+      aux = aux->next;
     }
-    a ->next = b;
-    b = malloc(sizeof(struct s_node));    //agrega el elemento al final de la lista
-    (*b) = new;
+    aux->next = new;
   }
   return l;
 }
@@ -109,10 +96,10 @@ list addr(list l, elem e){
 
 unsigned int length(list l){
   unsigned int length = 0u;
-  struct s_node * a = l;
-  while (a != NULL){
-    l++;
-    a = a -> next;
+  list a = l;
+  while (!is_empty(a)){
+    a = a->next;
+    length = length + 1;
   }
   return length;
 }
@@ -122,12 +109,16 @@ unsigned int length(list l){
 
 
 list concat (list l1, list l2){
-
-  while (!is_empty(l2)){
-    addr(l1, head(l2));
-    l2 = tail(l2);
+  if (is_empty(l1)){
+    l1 = l2;
   }
-
+  else{
+    list a = l1;
+    while (a->next != NULL){
+      a = a->next;
+    }
+    a->next = l2;
+  }
   return l1;
 }
 /*
@@ -182,9 +173,9 @@ list drop(list l, unsigned int n){
 
 list copy_list(list l1){
   list l2 = empty();
-  struct s_node * a = l1;
+  list a = l1;
   while (a != NULL){
-    addr(l2, a->value);
+    l2 = addr(l2, a->value);
     a = a->next;
   } 
   return l2;
